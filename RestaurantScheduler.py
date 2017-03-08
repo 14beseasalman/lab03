@@ -73,42 +73,39 @@ class Restaurant:
 		try:
 			numberOfPeople = int(numberOfPeople)
 		except ValueError:
-			print "Invalid Number of People"
-			return None
+			return "Invalid Number of People"
 		
 		if numberOfPeople>12:
-			print "Can not accomodate so many people"
-			return None
+			return "Can not accomodate so many people"
 
 		elif numberOfPeople > 6 and numberOfPeople <=12:
 			try:
 				return self.xLargeTables.pop()
 			except IndexError as e:
-				print "No more Extra Large Tables Left"
+				return "No more Extra Large Tables Left"
 
 		elif numberOfPeople > 4 and numberOfPeople <=6:
 			try:
 				return self.largeTables.pop()
 			except IndexError as e:
-				print "No more Large Tables Left"
+				return "No more Large Tables Left"
 			
 
 		elif numberOfPeople > 2 and numberOfPeople <=4:
 			try:
 				return self.medTables.pop()
 			except IndexError as e:
-				print "No more Medium Tables Left"
+				return "No more Medium Tables Left"
 			
 
 		elif numberOfPeople > 0 and numberOfPeople <=2:
 			try:
 				return self.smallTables.pop()
 			except IndexError as e:
-				print "No more Small Tables Left"
+				return "No more Small Tables Left"
 
 		elif numberOfPeople <=0:
-			print "Invalid Number of People"
-			return None
+			return "Invalid Number of People"
 
 
 if __name__ == "__main__":
