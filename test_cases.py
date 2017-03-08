@@ -21,10 +21,11 @@ class RestaurantTest(unittest.TestCase):
 		for x in range(0,6):
 			self.R.bookTable(9)
 		self.assertEqual(self.R.bookTable(9), "No more Extra Large Tables Left")
+	
 	def test_appropriate_table_assigned(self):
 		t = self.R.bookTable(3)
 		self.assertEqual(t.Name(),"Medium Table")
-		
+
 
 if __name__ == '__main__':
 	unittest.main(verbosity=2)
