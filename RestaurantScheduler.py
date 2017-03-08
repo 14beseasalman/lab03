@@ -1,10 +1,10 @@
+from collections import deque
+
 class Table:
-	def __init__(self, capacity):
+	def __init__(self, capacity, ts):
 		self.maxCapacity = capacity
-		# the restaurant is open for 11hrs
-		# if serving one set of customer takes 1hr 45 mins (i.e. Wait Time)
-		# one table can be used 6 times in a day
-		self.availableTimeSlots = 6
+		self.timeslot=ts
+		
 
 	def seatPeople(self,peopleCount):
 		self.peopleCount = peopleCount
@@ -13,16 +13,9 @@ class Table:
 		# assuming one person orders two items that takes 30mins to prepare
 		# also assuming each person takes 45mins to eat their whole meal
 		return (30*2) + 45
-	def isTimeConstrained(self):
-		# No	 booking time constraints for extra-large table
-		if self.maxCapacity>=12:
-			return false
-		else:
-			return true
-	def totalAvailableTimeSlots(self):
-		return self.availableTimeSlots
-	def useTable(self):
-		self.availableTimeSlots -= 1
+	def timeSlot(self):
+		return self.timeslot	
+
 	def Name(self):
 		if self.maxCapacity > 6 and self.maxCapacity <=12:
 			return "Extra Large Table"
@@ -35,80 +28,95 @@ class Table:
 
 class Restaurant:
 	def __init__(self):
+		# the restaurant is open for 11hrs
+		# if serving one set of customer takes 1hr 45 mins (i.e. Wait Time)
+		# one table can be used 6 times in a day
+		self.xLargeTables =[]
+		self.largeTables = []
+		self.medTables = []
+		self.smallTables = []
+		timeSlots = ["1100-1245","1245-1430","1430-1615","1615-1800","1800-1945","1945-2100"]
+		# add xtralarge tables of 12 capacity 6 times
+		for x in range(0,6):
+			self.xLargeTables.extend([Table(12,timeSlots[x])])
+		self.xLargeTables = self.xLargeTables[::-1]
 		
-		self.xLargeTables = [Table(12)]
-		self.largeTables = [Table(6),Table(6),Table(6)]
-		self.medTables = [Table(4),Table(4),Table(4),Table(4),Table(4),Table(4),Table(4),Table(4)]
-		self.smallTables = [Table(2),Table(2),Table(2),Table(2)]
+		# add largeTables tables of 6 capacity  6 times
+		for x in range(0,6):
+			self.largeTables.extend([Table(6,timeSlots[x])])
+			self.largeTables.extend([Table(6,timeSlots[x])])
+			self.largeTables.extend([Table(6,timeSlots[x])])
+		self.largeTables = self.largeTables[::-1]
+
+		# add medTables tables of 4 capacity  6 times
+		for x in range(0,6):
+			self.medTables.extend([Table(4,timeSlots[x])])
+			self.medTables.extend([Table(4,timeSlots[x])])
+			self.medTables.extend([Table(4,timeSlots[x])])
+			self.medTables.extend([Table(4,timeSlots[x])])
+			self.medTables.extend([Table(4,timeSlots[x])])
+			self.medTables.extend([Table(4,timeSlots[x])])
+			self.medTables.extend([Table(4,timeSlots[x])])
+			self.medTables.extend([Table(4,timeSlots[x])])
+		self.medTables = self.medTables[::-1]
+
+		# add medTables tables of 2 capacity  6 times
+		for x in range(0,6):
+			self.smallTables.extend([Table(2,timeSlots[x])])
+			self.smallTables.extend([Table(2,timeSlots[x])])
+			self.smallTables.extend([Table(2,timeSlots[x])])
+			self.smallTables.extend([Table(2,timeSlots[x])])
+		self.smallTables = self.smallTables[::-1]
+
+
 	def bookTable(self,numberOfPeople):
+		try:
+			numberOfPeople = int(numberOfPeople)
+		except ValueError:
+			print "Invalid Number of People"
+			return None
+		
 		if numberOfPeople>12:
 			print "Can not accomodate so many people"
 			return None
 
 		elif numberOfPeople > 6 and numberOfPeople <=12:
-			if(self.xLargeTables[0].totalAvailableTimeSlots()>0):
-				pass
-			else:
-				try:
-					self.xLargeTables = self.xLargeTables[1:]
-				except IndexError:
-					print "No more extra-large tables left"
-					return None
-			self.xLargeTables[0].useTable()
-
-			return self.xLargeTables[0]
+			try:
+				return self.xLargeTables.pop()
+			except IndexError as e:
+				print "No more Extra Large Tables Left"
 
 		elif numberOfPeople > 4 and numberOfPeople <=6:
-			if(self.largeTables[0].totalAvailableTimeSlots()>0):
-				pass
-			else:
-				try:
-					self.largeTables = self.largeTables[1:]
-					
-				except IndexError:
-					print "No more large tables left"
-					return None
-			self.largeTables[0].useTable()
-			return self.largeTables[0]
+			try:
+				return self.largeTables.pop()
+			except IndexError as e:
+				print "No more Large Tables Left"
+			
 
 		elif numberOfPeople > 2 and numberOfPeople <=4:
-			if(self.medTables[0].totalAvailableTimeSlots()>0):
-				pass
-			else:
-				try:
-					self.medTables = self.medTables[1:]
-				except IndexError:
-					print "No more medium tables left"
-					return None
+			try:
+				return self.medTables.pop()
+			except IndexError as e:
+				print "No more Medium Tables Left"
+			
 
-			self.medTables[0].useTable()
-			return self.medTables[0]
 		elif numberOfPeople > 0 and numberOfPeople <=2:
-			if(self.smallTables[0].totalAvailableTimeSlots()>0):
-				pass
-			else:
-				try:
-					self.smallTables = self.smallTables[1:]
-					
-				except IndexError:
-					print "No more small tables left"
-					return None
-
-			self.smallTables[0].useTable()
-			return self.smallTables[0]
+			try:
+				return self.smallTables.pop()
+			except IndexError as e:
+				print "No more Small Tables Left"
 
 		elif numberOfPeople <=0:
-			print "Invalide Number of People"
+			print "Invalid Number of People"
 			return None
 
 
 if __name__ == "__main__":
 	R = Restaurant()
-	T =  R.bookTable(6)
-	
+	T = R.bookTable(6)
 	if T:
 		# will successfully book Large table
-		print T.Name()
+		print(T.Name() + " (" + T.timeSlot() + ")")
 	
 	T = R.bookTable(20)
 	if T:
