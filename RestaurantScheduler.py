@@ -4,7 +4,6 @@ import pickle
 import os.path
 
 
-
 class Table:
 	def __init__(self, capacity, ts):
 		self.maxCapacity = capacity
@@ -129,8 +128,23 @@ class Restaurant:
 				return "Invalid Number of People"
 			log.write("\n")
 
+def createAuthTables():
+	db = MySQLdb.connect(host="localhost", 
+                     user="root",       
+                     passwd="", 
+                     db="restaurant")
+
+	# you must create a Cursor object. It will let
+	#  you execute all the queries you need
+	cur = db.cursor()
+
+	cur.execute("CREATE TABLE IF NOT EXISTS RES_AUTH_TABLE (USER_ID INT, NAME VARCHAR(30), PASS VARCHAR(30))")
+	cur.execute("INSERT INTO RES_AUTH_TABLE VALUES(1, \"Asad\", \"123456\"")")
+
+	db.close()
 
 if __name__ == "__main__":
+	#createAuthTables()
 	if os.path.isfile("./dump.pickle"):
 		# Check if previous restaurant state exists
 		print("Restoring restaurant from previous dump")

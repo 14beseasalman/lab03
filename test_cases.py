@@ -45,6 +45,8 @@ class RestaurantTest(unittest.TestCase):
 		fileObject = open("test_dump.pickle",'rb')
 		R2 = pickle.load(fileObject)
 		fileObject.close()
+
+		# if previous state is loaded correctly, no more extra large tables should be left
 		self.assertEqual(R.bookTable(10),"No more Extra Large Tables Left")
 
 
