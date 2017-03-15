@@ -26,6 +26,16 @@ class RestaurantTest(unittest.TestCase):
 		t = self.R.bookTable(3)
 		self.assertEqual(t.Name(),"Medium Table")
 
+	def test_logging(self):
+		t = self.R.bookTable(3)
+		with open("log.txt", "rb") as f:
+			first = f.readline()      
+			f.seek(-2, 2)             
+			while f.read(1) != b"\n": 
+				f.seek(-2, 1)         
+			last = f.readline()       
+			self.assertEqual("Medium Table" in str(last),True)
+
 
 if __name__ == '__main__':
 	unittest.main(verbosity=2)

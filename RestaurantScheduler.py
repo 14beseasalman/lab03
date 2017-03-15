@@ -122,7 +122,7 @@ class Restaurant:
 					return "No more Small Tables Left"
 
 			elif numberOfPeople <=0:
-				return "Invalid Number of People \n"
+				return "Invalid Number of People"
 			log.write("\n")
 
 
