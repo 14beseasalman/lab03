@@ -86,7 +86,7 @@ class Restaurant:
 			elif numberOfPeople > 6 and numberOfPeople <=12:
 				try:
 					tbl =  self.xLargeTables.pop()
-					log.write(str(datetime.datetime.now()) + " | Booked Extra Large Table for " + str(numberOfPeople) + " people\n")
+					log.write(str(datetime.datetime.now()) + " | Booked Extra Large Table for " + str(numberOfPeople) + " people at "+ tbl.timeSlot()+"\n")
 					return tbl
 				except IndexError as e:
 					log.write(str(datetime.datetime.now()) + " | No more Extra Large Tables Left: Table Not Booked.\n")
@@ -95,7 +95,7 @@ class Restaurant:
 			elif numberOfPeople > 4 and numberOfPeople <=6:
 				try:
 					tbl =  self.largeTables.pop()
-					log.write(str(datetime.datetime.now()) + " | Booked Large Table for " + str(numberOfPeople) + " people\n")
+					log.write(str(datetime.datetime.now()) + " | Booked Large Table for " + str(numberOfPeople) + " people at "+ tbl.timeSlot()+"\n")
 					return tbl
 				except IndexError as e:
 					log.write(str(datetime.datetime.now()) + " | No more Large Tables Left: Table Not Booked.\n")
@@ -105,7 +105,7 @@ class Restaurant:
 			elif numberOfPeople > 2 and numberOfPeople <=4:
 				try:
 					tbl =  self.medTables.pop()
-					log.write(str(datetime.datetime.now()) + " | Booked Medium Table for " + str(numberOfPeople) + " people\n")
+					log.write(str(datetime.datetime.now()) + " | Booked Medium Table for " + str(numberOfPeople) + " people at "+ tbl.timeSlot()+"\n")
 					return tbl
 				except IndexError as e:
 					log.write(str(datetime.datetime.now()) + " | No more Medium Tables Left: Table Not Booked.\n")
@@ -115,7 +115,7 @@ class Restaurant:
 			elif numberOfPeople > 0 and numberOfPeople <=2:
 				try:
 					tbl =  self.smallTables.pop()
-					log.write(str(datetime.datetime.now()) + " | Booked Small Table for " + str(numberOfPeople) + " people\n")
+					log.write(str(datetime.datetime.now()) + " | Booked Small Table for " + str(numberOfPeople) + " people at "+ tbl.timeSlot()+"\n")
 					return tbl
 				except IndexError as e:
 					log.write(str(datetime.datetime.now()) + " | No more Small Tables Left: Table Not Booked.\n")
