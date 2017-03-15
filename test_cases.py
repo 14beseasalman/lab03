@@ -1,4 +1,5 @@
 import unittest
+import pickle
 from RestaurantScheduler import Restaurant
 import sys
 from io import StringIO
@@ -25,6 +26,28 @@ class RestaurantTest(unittest.TestCase):
 	def test_appropriate_table_assigned(self):
 		t = self.R.bookTable(3)
 		self.assertEqual(t.Name(),"Medium Table")
+
+	def test_restaurant_presistence(self):
+		# create a new restaurant and use up all the Extra Large Tables
+		R = Restaurant()
+		R.bookTable(10)
+		R.bookTable(10)
+		R.bookTable(10)
+		R.bookTable(10)
+		R.bookTable(10)
+		R.bookTable(10)
+		# presist state of restaurant
+		fileObject = open("test_dump.pickle",'wb')
+		pickle.dump(R,fileObject)
+		fileObject.close()
+
+		# load state of restaurant
+		fileObject = open("test_dump.pickle",'rb')
+		R2 = pickle.load(fileObject)
+		fileObject.close()
+		self.assertEqual(R.bookTable(10),"No more Extra Large Tables Left")
+
+
 
 	def test_logging(self):
 		t = self.R.bookTable(3)

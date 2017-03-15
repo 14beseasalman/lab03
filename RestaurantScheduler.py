@@ -1,5 +1,9 @@
 from collections import deque
 import datetime
+import pickle
+import os.path
+
+
 
 class Table:
 	def __init__(self, capacity, ts):
@@ -127,9 +131,22 @@ class Restaurant:
 
 
 if __name__ == "__main__":
-	R = Restaurant()
-	T = R.bookTable(6)
-	if T:
-		# will successfully book Large table
-		print(T.Name() + " (" + T.timeSlot() + ")")
+	if os.path.isfile("./dump.pickle"):
+		# Check if previous restaurant state exists
+		print("Restoring restaurant from previous dump")
+		fileObject = open("dump.pickle",'rb')
+		R = pickle.load(fileObject)
+		fileObject.close()
+
+	else:
+		# else create a new restarutant
+		print("Creating new restaurant")
+		R = Restaurant()
+	
+	
+
+	# presist current restaurant state to file
+	fileObject = open("dump.pickle",'wb')
+	pickle.dump(R,fileObject)
+	fileObject.close()
 	
