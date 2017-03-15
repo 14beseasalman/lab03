@@ -1,4 +1,5 @@
 from collections import deque
+import datetime
 
 class Table:
 	def __init__(self, capacity, ts):
@@ -70,42 +71,59 @@ class Restaurant:
 
 
 	def bookTable(self,numberOfPeople):
-		try:
-			numberOfPeople = int(numberOfPeople)
-		except ValueError:
-			return "Invalid Number of People"
-		
-		if numberOfPeople>12:
-			return "Can not accomodate so many people"
-
-		elif numberOfPeople > 6 and numberOfPeople <=12:
+		with open("log.txt", "a") as log:
+			log.write(str(datetime.datetime.now()) + " | Attempting to book table...\n")
 			try:
-				return self.xLargeTables.pop()
-			except IndexError as e:
-				return "No more Extra Large Tables Left"
-
-		elif numberOfPeople > 4 and numberOfPeople <=6:
-			try:
-				return self.largeTables.pop()
-			except IndexError as e:
-				return "No more Large Tables Left"
+				numberOfPeople = int(numberOfPeople)
+			except ValueError:
+				log.write(str(datetime.datetime.now()) + " | Invalid Input: Table Not Booked.\n")
+				return "Invalid Number of People"
 			
+			if numberOfPeople>12:
+				log.write(str(datetime.datetime.now()) + " | Can not accomodate so many people: Table Not Booked.\n")
+				return "Can not accomodate so many people"
 
-		elif numberOfPeople > 2 and numberOfPeople <=4:
-			try:
-				return self.medTables.pop()
-			except IndexError as e:
-				return "No more Medium Tables Left"
-			
+			elif numberOfPeople > 6 and numberOfPeople <=12:
+				try:
+					tbl =  self.xLargeTables.pop()
+					log.write(str(datetime.datetime.now()) + " | Booked Extra Large Table for " + str(numberOfPeople) + " people\n")
+					return tbl
+				except IndexError as e:
+					log.write(str(datetime.datetime.now()) + " | No more Extra Large Tables Left: Table Not Booked.\n")
+					return "No more Extra Large Tables Left"
 
-		elif numberOfPeople > 0 and numberOfPeople <=2:
-			try:
-				return self.smallTables.pop()
-			except IndexError as e:
-				return "No more Small Tables Left"
+			elif numberOfPeople > 4 and numberOfPeople <=6:
+				try:
+					tbl =  self.largeTables.pop()
+					log.write(str(datetime.datetime.now()) + " | Booked Large Table for " + str(numberOfPeople) + " people\n")
+					return tbl
+				except IndexError as e:
+					log.write(str(datetime.datetime.now()) + " | No more Large Tables Left: Table Not Booked.\n")
+					return "No more Large Tables Left"
+				
 
-		elif numberOfPeople <=0:
-			return "Invalid Number of People"
+			elif numberOfPeople > 2 and numberOfPeople <=4:
+				try:
+					tbl =  self.medTables.pop()
+					log.write(str(datetime.datetime.now()) + " | Booked Medium Table for " + str(numberOfPeople) + " people\n")
+					return tbl
+				except IndexError as e:
+					log.write(str(datetime.datetime.now()) + " | No more Medium Tables Left: Table Not Booked.\n")
+					return "No more Medium Tables Left"
+				
+
+			elif numberOfPeople > 0 and numberOfPeople <=2:
+				try:
+					tbl =  self.smallTables.pop()
+					log.write(str(datetime.datetime.now()) + " | Booked Small Table for " + str(numberOfPeople) + " people\n")
+					return tbl
+				except IndexError as e:
+					log.write(str(datetime.datetime.now()) + " | No more Small Tables Left: Table Not Booked.\n")
+					return "No more Small Tables Left"
+
+			elif numberOfPeople <=0:
+				return "Invalid Number of People \n"
+			log.write("\n")
 
 
 if __name__ == "__main__":
@@ -115,7 +133,3 @@ if __name__ == "__main__":
 		# will successfully book Large table
 		print(T.Name() + " (" + T.timeSlot() + ")")
 	
-	T = R.bookTable(20)
-	if T:
-		# Table wont get booked, too many people
-		print T.Name()
